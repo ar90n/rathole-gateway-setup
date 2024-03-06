@@ -1,0 +1,12 @@
+
+- hosts: client
+  become: true # become root
+  roles:
+    - common
+    - rathole-client
+
+- hosts: server
+  become: true # become root
+  roles:
+    - common
+    - rathole-server

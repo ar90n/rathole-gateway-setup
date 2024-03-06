@@ -1,0 +1,28 @@
+---
+- name: Copy rathole configuration file
+  copy:
+    src: server.toml
+    dest: /etc/rathole/server.toml
+    remote_src: false
+    force: true # force the file to be replaced on subsequent runs
+  tags: copy-config
+
+- name: Create rathole-server service file
+  copy:
+    src: rathole.service
+    dest: /lib/systemd/system/rathole.service
+    mode: 644
+
+- name: Configuring systemctl
+  systemd_service:
+    daemon_reload: true # reload changes
+    name: rathole
+    state: started # set rathole to start always
+    enabled: true
+  tags: copy-config
+
+- name: Restart rathole service
+  systemd_service:
+    name: rathole
+    state: restarted
+  tags: copy-config
