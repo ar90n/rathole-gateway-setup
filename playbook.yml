@@ -2,8 +2,10 @@
 - hosts: client
   become: true # become root
   roles:
+    - wireguard
     - common
     - rathole-client
+    
 
 - hosts: server
   become: true # become root

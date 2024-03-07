@@ -1,0 +1,29 @@
+# If you're not sure what changes to make here, you can run the installer manually the first time on the PI and then copy the values 
+# from /etc/pivpn/wireguard/setupVars.conf
+
+IPv4dev=eth0
+IPv6dev=eth0
+install_user=pi
+
+VPN=wireguard
+pivpnNET=10.6.0.0
+subnetClass=24
+
+ALLOWED_IPS="0.0.0.0/0, ::0/0"
+dhcpReserv=1
+# Prevent leakage as suggested by PiVPN
+pivpnforceipv6route=1
+pivpnforceipv6=0
+pivpnenableipv6=0
+pivpnNETv6="fd11:5ee:bad:c0de::"
+subnetClassv6=64
+
+pivpnMTU=1420
+pivpnPORT=51820
+pivpnDNS1=1.1.1.1
+pivpnDNS2=1.0.0.1
+pivpnHOST=pivpn.example.com
+
+pivpnPERSISTENTKEEPALIVE=25
+# Unattended upgrades
+UNATTUPG=1
