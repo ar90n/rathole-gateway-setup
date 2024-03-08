@@ -1,20 +1,31 @@
 ---
-- name: Download latest pivpn version
-  get_url:
-    force: false # Force the file to be re-downloaded even if it exists.
-    dest: /tmp/install-pivpn.sh
-    url: https://install.pivpn.io
-    mode: +x
-  tags: install
 
-- name: Copy pivpn config
-  copy:
-    src: pivpn.conf
-    dest: /tmp/pivpn-setup.conf
-    remote_src: false
-    force: true # force the file to be replaced on subsequent runs
-  tags: install
+- block:
+  when: ansible_local.gateway.pivpn.is_installed is not defined
+  - name: Download latest pivpn version
+    get_url:
+      force: false # Force the file to be re-downloaded even if it exists.
+      dest: /tmp/install-pivpn.sh
+      url: https://install.pivpn.io
+      mode: +x
 
-# https://docs.pivpn.io/wireguard/
-- name: Execute PIVPN unattended install, log will be generated at /tmp/install-pivpn-output.log
-  ansible.builtin.shell: /tmp/install-pivpn.sh --unattended /tmp/pivpn-setup.conf >> /tmp/pivpn-installer-output.log
+  - name: Copy pivpn config
+    copy:
+      src: pivpn.conf
+      dest: /tmp/pivpn-setup.conf
+      remote_src: false
+      force: true # force the file to be replaced on subsequent runs
+
+  # https://docs.pivpn.io/wireguard/
+  - name: Execute PIVPN unattended install, log will be generated at /tmp/install-pivpn-output.log
+    ansible.builtin.shell: /tmp/install-pivpn.sh --unattended /tmp/pivpn-setup.conf >> /tmp/pivpn-installer-output.log
+
+  - name: 
+    ini_file:
+      path: "/etc/ansible/facts.d/gateway.fact"
+      section: pivpn
+      option: is_installed
+      value: true
+
+  - name: Reload Ansible local facts
+    setup: filter=ansible_local

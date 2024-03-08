@@ -1,4 +1,20 @@
 ---
+## https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_vars_facts.html#local-facts
+- name: Create directory for ansible custom facts
+  ansible.builtin.file:
+    state: directory
+    recurse: true
+    path: /etc/ansible/facts.d
+
+- name: Install custom ipmi fact
+  ansible.builtin.copy:
+    src: ipmi.fact
+    dest: /etc/ansible/facts.d
+
+- name: Re-read facts after adding custom fact
+  ansible.builtin.setup:
+    filter: ansible_local
+
 - name: Install aptitude package manager
   apt:
     name: aptitude
@@ -30,3 +46,13 @@
   ansible.builtin.file:
     path: /etc/rathole
     state: directory
+
+
+
+
+
+handlers:
+  - name: Restart apache
+    ansible.builtin.service:
+      name: httpd
+      state: restarted

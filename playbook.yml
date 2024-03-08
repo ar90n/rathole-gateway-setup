@@ -3,8 +3,8 @@
   become: true # become root
   roles:
     - wireguard
-    - common
-    - rathole-client
+  #  - common
+  #  - rathole-client
     
 
 - hosts: server
