@@ -1,21 +1,13 @@
 ---
 ## https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_vars_facts.html#local-facts
-- name: Create directory for ansible custom facts
-  ansible.builtin.file:
-    state: directory
-    recurse: true
-    path: /etc/ansible/facts.d
 
-- name: Install custom ipmi fact
-  ansible.builtin.copy:
-    src: ipmi.fact
-    dest: /etc/ansible/facts.d
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
 
-- name: Re-read facts after adding custom fact
-  ansible.builtin.setup:
-    filter: ansible_local
-
-- name: Install aptitude package manager
+- name: Install/update aptitude package manager
   apt:
     name: aptitude
     state: latest
@@ -27,32 +19,3 @@
 #      - curl
 #    state: latest
 #    update_cache: true
-
-- name: Download latest rathole version
-  get_url:
-    force: false # Force the file to be re-downloaded even if it exists.
-    dest: /tmp/rathole.zip
-    url: https://github.com/rapiz1/rathole/releases/latest/download/rathole-arm-unknown-linux-musleabi.zip
-
-- name: Downloading and extracting rathole
-  unarchive:
-    creates: /usr/local/bin/rathole # If the specified absolute path (file or directory) already exists, this step will not be run.
-    dest: /usr/local/bin
-    remote_src: "yes"
-    src: /tmp/rathole.zip
-    mode: +x # set as executable
-
-- name: Create rathole configuration directory at /etc/rathole
-  ansible.builtin.file:
-    path: /etc/rathole
-    state: directory
-
-
-
-
-
-handlers:
-  - name: Restart apache
-    ansible.builtin.service:
-      name: httpd
-      state: restarted

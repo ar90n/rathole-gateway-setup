@@ -1,0 +1,65 @@
+- name: Checking for rathole
+  stat:
+    path: /usr/local/bin/rathole
+  register: rathole_result
+
+- name: rathole status
+  debug:
+    msg: "rathole is not installed"
+  when: not rathole_result.stat.exists
+
+
+- name: Download latest rathole version
+  get_url:
+    dest: /tmp/rathole.zip
+    url: https://github.com/rapiz1/rathole/releases/latest/download/rathole-arm-unknown-linux-musleabi.zip
+  register: get_rathole
+  when: not rathole_result.stat.exists
+
+- name: Extracting rathole
+  ansible.builtin.unarchive:
+    creates: /usr/local/bin/rathole
+    dest: /usr/local/bin
+    remote_src: "yes" # file exists on remote
+    src: /tmp/rathole.zip
+    mode: +x # set as executable
+  when: not rathole_result.stat.exists
+
+- name: Ensure rathole configuration directory exists at /etc/rathole
+  ansible.builtin.file:
+    path: /etc/rathole
+    state: directory
+  tags: copy-files
+
+- name: Copy rathole configuration file
+  copy:
+    src: '{{ group_names[0] }}.toml' # server.toml or client.toml depending on the run context
+    dest: /etc/rathole/rathole.toml
+    remote_src: false # file is located on the controller
+    force: true # force the file to be replaced when it's changed
+  register: rathole_config
+  tags: copy-files
+
+- name: Create/update rathole service file
+  copy:
+    src: rathole.service
+    dest: /lib/systemd/system/rathole.service
+    force: true # force the file to be replaced when it's changed
+    mode: 644
+  register: rathole_service
+  tags: copy-files
+
+
+- name: Configuring systemctl
+  systemd:
+    daemon_reload: true # reload changes
+    name: rathole
+    state: started # set rathole to start always
+    enabled: true
+
+- name: Restart rathole service
+  systemd:
+    name: rathole
+    state: restarted
+  when: rathole_config is changed or rathole_service is changed
+  tags: copy-files

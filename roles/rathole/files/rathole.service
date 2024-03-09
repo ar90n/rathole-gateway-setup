@@ -1,5 +1,5 @@
 [Unit]
-Description=Rathole Client Service
+Description=rathole Service
 After=network.target
 
 [Service]
@@ -7,7 +7,7 @@ Type=simple
 DynamicUser=yes
 Restart=on-failure
 RestartSec=5s
-ExecStart=/usr/local/bin/rathole -c /etc/rathole/client.toml
+ExecStart=/usr/local/bin/rathole -c /etc/rathole/rathole.toml
 LimitNOFILE=1048576
 
 [Install]

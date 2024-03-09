@@ -1,5 +1,5 @@
-# If you're not sure what changes to make here, you can run the installer manually the first time on the PI and then copy the values 
-# from /etc/pivpn/wireguard/setupVars.conf
+# If you're not sure what changes to make here, you can run PiVPN manually (https://www.pivpn.io/) then copy the values 
+# from /etc/pivpn/wireguard/setupVars.conf for future redeploys, ansible will detect pivpn is installed and skip the install section.
 
 IPv4dev=eth0
 IPv6dev=eth0
