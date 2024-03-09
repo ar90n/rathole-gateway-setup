@@ -1,12 +1,11 @@
 ---
+# https://docs.pivpn.io/wireguard/
 
 - name: Check if pivpn is installed
   stat:
     path: /etc/pivpn/wireguard/setupVars.conf
   register: pivpn_result
 
-#- block:
-  #when: ansible_local.gateway.pivpn.is_installed is not defined
 - name: Download latest pivpn version
   get_url:
     force: false # Force the file to be re-downloaded even if it exists.
@@ -23,13 +22,13 @@
     force: true # force the file to be replaced
   when: not pivpn_result.stat.exists
 
-# https://docs.pivpn.io/wireguard/
+
 - name: Execute PIVPN install
   ansible.builtin.shell:
     cmd: /tmp/install-pivpn.sh --unattended /tmp/wireguard.conf
   register: pivpn_install
   when: not pivpn_result.stat.exists
-  
+
 - name: Rebooting to apply pivpn changes
   ansible.builtin.reboot:
   when: pivpn_install is defined
