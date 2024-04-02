@@ -10,13 +10,15 @@ Expose services hosted locally via the external server IP, securly VPN into your
     - [x] Install and configure Wireguard
     - [x] Apply config changes on subsequent deploys
     - [ ] Flags to force re-install, do updates, etc
-    - [ ] Provide backup functionality and copy the backup to the controller 
+    - [ ] Provide backup functionality and copy the backup to the controller
+    - [ ] Specify rathole version for client-side installation
 - [x] Server
     - [x] Install and configure rathole
     - [ ] Install and configure Caddy
     - [ ] Install and configure fail2ban
     - [ ] Apply config changes on subequent deploys (rathole supported)
     - [ ] Flags to force re-install, do updates, etc
+    - [ ] Specify rathole version for server-side installation
 
 ## Get started
 ```bash

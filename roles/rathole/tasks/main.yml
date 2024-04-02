@@ -12,7 +12,7 @@
 - name: Download latest rathole version
   get_url:
     dest: /tmp/rathole.zip
-    url: https://github.com/rapiz1/rathole/releases/latest/download/rathole-arm-unknown-linux-musleabi.zip
+    url: https://github.com/rapiz1/rathole/releases/latest/download/rathole-x86_64-unknown-linux-gnu.zip
   register: get_rathole
   when: not rathole_result.stat.exists
 

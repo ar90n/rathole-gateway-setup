@@ -13,9 +13,9 @@
     state: latest
     update_cache: true
 
-#- name: Install dependencies
-#  apt:
-#    pkg:
-#      - curl
-#    state: latest
-#    update_cache: true
+- name: Install dependencies
+  apt:
+    pkg:
+      - unzip
+    state: latest
+    update_cache: true
