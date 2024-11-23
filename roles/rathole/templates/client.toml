@@ -1,0 +1,28 @@
+[client]
+remote_addr = "{{ remote_host }}:{{ default_port }}"
+default_token = "{{ default_token }}"
+
+#[client.transport]
+#type = "noise"
+#
+#[client.transport.noise]
+#pattern = "Noise_KK_25519_ChaChaPoly_BLAKE2s"
+#local_private_key = "client-priv-key-here"
+#remote_public_key = "server-pub-key-here"
+
+[client.services.mc-java-tcp]
+local_addr = "127.0.0.1:25565"
+type = "tcp"
+
+[client.services.mc-java-udp]
+local_addr = "127.0.0.1:25565"
+type = "udp"
+
+
+[client.services.mc-bedrock-tcp]
+local_addr = "127.0.0.1:19132"
+type = "tcp"
+
+[client.services.mc-bedrock-udp]
+local_addr = "127.0.0.1:19132"
+type = "udp"

@@ -32,7 +32,7 @@
   tags: copy-files
 
 - name: Copy rathole configuration file
-  copy:
+  template:
     src: '{{ group_names[0] }}.toml' # server.toml or client.toml depending on the run context
     dest: /etc/rathole/rathole.toml
     remote_src: false # file is located on the controller
@@ -63,3 +63,29 @@
     state: restarted
   when: rathole_config is changed or rathole_service is changed
   tags: copy-files
+
+- name: Allow rathole ports
+  ansible.builtin.iptables:
+     comment: 
+     chain: INPUT
+     protocol: tcp
+     destination_port: 2333
+     jump: ACCEPT
+
+- name: Allow minecraft tcp ports
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_ports:
+      - "25565"
+      - "19132"
+    jump: ACCEPT
+
+- name: Allow minecraft udp ports
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: udp
+    destination_ports:
+      - "25565"
+      - "19132"
+    jump: ACCEPT

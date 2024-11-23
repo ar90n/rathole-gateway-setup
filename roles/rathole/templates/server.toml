@@ -1,0 +1,28 @@
+[server]
+bind_addr = "0.0.0.0:{{ default_port }}"
+default_token = "{{ default_token }}"
+
+#[server.transport]
+#type = "noise"
+#
+## enable bidirectional authentication
+## see: https://github.com/rapiz1/rathole/blob/main/docs/transport.md
+#[server.transport.noise]
+#pattern = "Noise_KK_25519_ChaChaPoly_BLAKE2s"
+#local_private_key = "server-priv-key-here"
+#remote_public_key = "client-pub-key-here"
+
+[server.services.mc-java-tcp]
+bind_addr = "0.0.0.0:25565"
+
+[server.services.mc-java-udp]
+bind_addr = "0.0.0.0:25565"
+type = "udp"
+
+[server.services.mc-bedrock-tcp]
+bind_addr = "0.0.0.0:19132"
+type = "tcp"
+
+[server.services.mc-bedrock-udp]
+bind_addr = "0.0.0.0:19132"
+type = "udp"
